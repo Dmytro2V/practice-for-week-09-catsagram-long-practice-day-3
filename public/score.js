@@ -75,7 +75,9 @@ export const resetScore = () => {
     updateScore(0);
 };
 
-const updateScore = (newScore) => {
+export const updateScore = (newScore) => {
     const score = document.querySelector('.score');
     score.innerText = newScore;
+    // and save:
+    localStorage.setItem("catstagramScore", newScore);
 };

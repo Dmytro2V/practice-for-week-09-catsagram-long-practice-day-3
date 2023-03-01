@@ -65,7 +65,7 @@ const createCommentSubmitBtn = () => {
     const submitBtn = document.createElement("input");
     submitBtn.id = "submit-comment"
     submitBtn.type = "submit";
-    submitBtn.value = "Submit";
+    //submitBtn.value = "Submit";
 
     submitBtn.addEventListener('click', submitComment);
 
@@ -95,16 +95,43 @@ const createComment = (commentText) => {
     deleteButton.addEventListener('click', e => {
         // Remove comment from HTML DOM
         newCommentContainer.remove();
+        // after removing a comment save comments;
+        saveCommentsToLocal();
+
     });
 
     newCommentContainer.appendChild(newComment);
     newCommentContainer.appendChild(deleteButton);
     const comments = document.querySelector(".comments");
     comments.appendChild(newCommentContainer);
+    
+    // after new comment save comments;
+    saveCommentsToLocal();
 };
 
 
 export const resetComments = () => {
     const comments = document.querySelector(".comments");
     Array.from(comments.children).forEach(child => child.remove());
+    // after changing commentss = save them  
+    saveCommentsToLocal()
 };
+
+export const restoreComments = (commentsJSON) => {
+    let commentsArr = JSON.parse(commentsJSON);
+    for (const commentText of commentsArr) {
+        createComment(commentText);       
+    }
+};
+const saveCommentsToLocal = () => {
+    console.log('function to save comments');
+    let commentsDomList = document.getElementsByTagName('p');
+    let commentsElArray = Array.from(commentsDomList);
+    console.log(commentsElArray);
+    let commentsArray = [];
+    for (const comment of commentsElArray) {
+        commentsArray.push(comment.innerText);
+    }
+
+    localStorage.setItem("catstagramComments", JSON.stringify(commentsArray)) 
+}
